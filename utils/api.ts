@@ -1,4 +1,4 @@
-const createURL = (path) => window.location.origin + path
+const createURL = (path: string) => window.location.origin + path
 
 
 export const handleLogin = async () => {
@@ -9,5 +9,7 @@ export const handleLogin = async () => {
     })
   )
 
-  if (res.ok)
+  if (res.ok){
+    return res.json()
+  }
 }
