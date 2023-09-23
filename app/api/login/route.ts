@@ -18,5 +18,5 @@ const redirectUri = process.env.REDIRECT_URI;
 
 export const GET = async (request: NextApiRequest) => {
 
-  return NextResponse.json({message: 'hello'})
+  return NextResponse.redirect('http:/localhost:3000/dashboard')
 }
