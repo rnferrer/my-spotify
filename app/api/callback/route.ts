@@ -1,12 +1,11 @@
 import { spotifyApi } from "@/utils/spotifyAuth"
-import { useRouter } from "@/node_modules/next/router";
-
+import { NextResponse } from "@/node_modules/next/server";
 import { NextApiRequest, NextApiResponse } from "@/node_modules/next/dist/shared/lib/utils"
 
 export const GET = async (request: NextApiRequest, response: NextApiResponse) => {
   
   if (typeof request.url === 'string'){
-    const url: string | URL  = new URL(request.url, 'http://localhost:3000'); // Replace with your actual base URL
+    const url: string | URL  = new URL(request.url, 'http://localhost:3000');
     const code = url.searchParams.get('code');
     
     //code is not given in request
@@ -17,8 +16,7 @@ export const GET = async (request: NextApiRequest, response: NextApiResponse) =>
     try {
       const data = await spotifyApi.authorizationCodeGrant(code);
       const {access_token, refresh_token} = data.body;
-      response.setHeader('Location', '/dashboard');
-      response.status(302).end();
+      return NextResponse.redirect(new URL('/dashboard', request.url))
     }
     catch(e){
       console.log(e)
