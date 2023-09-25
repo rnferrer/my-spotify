@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-//TODO: Create mongoDB database on Atlas
 
 const connectDB = async () => {
   try {

@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
 
-const postSchema = new mongoose.Schema({
-  title: String,
-  content: String,
+const userSchema = new mongoose.Schema({
+  id: String,
+  email: String,
+  image: String,
+  name: String
 });
 
-const Post = mongoose.model('Post', postSchema);
+const User = mongoose.model('User', userSchema);
 
-export default Post;
+export default User;

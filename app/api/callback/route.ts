@@ -1,6 +1,7 @@
 import { spotifyApi } from "@/utils/spotifyAuth"
 import { NextResponse } from "@/node_modules/next/server";
 import { NextApiRequest, NextApiResponse } from "@/node_modules/next/dist/shared/lib/utils"
+import { getUserFromSpotifyID } from "../../../utils/auth"
 
 export const GET = async (request: NextApiRequest, response: NextApiResponse) => {
   
@@ -16,6 +17,13 @@ export const GET = async (request: NextApiRequest, response: NextApiResponse) =>
     try {
       const data = await spotifyApi.authorizationCodeGrant(code);
       const {access_token, refresh_token} = data.body;
+
+      spotifyApi.setAccessToken(access_token);
+      spotifyApi.setRefreshToken(refresh_token);
+
+      let userInfo = await spotifyApi.getMe()
+      let user = await getUserFromSpotifyID(userInfo.body.id)
+      
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
     catch(e){
