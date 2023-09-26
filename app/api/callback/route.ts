@@ -21,9 +21,11 @@ export const GET = async (request: NextApiRequest, response: NextApiResponse) =>
       spotifyApi.setAccessToken(access_token);
       spotifyApi.setRefreshToken(refresh_token);
 
-      let userInfo = await spotifyApi.getMe()
-      let user = await getUserFromSpotifyID(userInfo.body.id)
-      
+      const userInfo = await spotifyApi.getMe()
+      const {display_name, id, email, images} = userInfo.body
+      console.log(userInfo.body)
+      let user = await getUserFromSpotifyID(display_name, id, email, images)
+
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
     catch(e){
