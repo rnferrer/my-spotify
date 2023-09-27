@@ -1,8 +1,10 @@
+import SearchBar  from "../../components/search/SearchBar"
+
 export default function Dashboard() {
   return (
-   <div>
-    hello
+  <div className="w-screen flex justify-center">
+    <SearchBar/>
 
-   </div>
+  </div>
   )
 }
