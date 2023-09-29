@@ -14,12 +14,15 @@ function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
+      webSecurity: false,
+      contentSecurityPolicy: "default-src 'self' https://localhost https://api.spotify.com"
     },
   });
   win.loadURL('http://localhost:3000');
 }
+
 
 app.whenReady().then(createWindow);
 

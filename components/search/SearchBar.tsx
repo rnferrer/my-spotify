@@ -1,13 +1,14 @@
 'use client'
 
-import { ChangeEvent } from "react"
+import { useState } from "react"
 
 const SearchBar = () => {
-  let search = ''
-
-  const handleChange = async(event: ChangeEvent<HTMLInputElement>) =>{
+  
+  const [search, setSearch] = useState('')
+  const handleChange = async(event) =>{
     event.preventDefault()
-    search = event.target.value
+    console.log(event.target.value)
+    setSearch(event.target.value)
     
     if (search.replace(/\s/g, '').length === 0) return
     else{
@@ -15,19 +16,22 @@ const SearchBar = () => {
       const url = `/api/search?${queryString}`;
       const response = await fetch (url);
       let results = await response.json()
-
+  
     }
   }
 
+
+
   return(
-    <div className="w-screen">
+    <div className="w-screen z-999">
       <form>
         <input 
-        type="text" 
-        placeholder="Search song to queue" 
         autoComplete="off" 
-        onChange={handleChange}
-        >
+        className="text-black" 
+        onChange={(e)=>handleChange(e)} 
+        placeholder="Search song to queue" 
+        type="text" 
+        value={search}>
         </input>
       </form>
     </div>
