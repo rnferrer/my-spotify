@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 
 const SearchBar = () => {
   
   const [search, setSearch] = useState('')
-  const handleChange = async(event) =>{
+  const handleChange = async(event: ChangeEvent<HTMLInputElement>) =>{
     event.preventDefault()
     console.log(event.target.value)
     setSearch(event.target.value)

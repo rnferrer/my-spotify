@@ -1,7 +1,7 @@
 import { spotifyApi } from "@/utils/spotifyAuth"
 import { NextResponse } from "@/node_modules/next/server";
 import { NextApiRequest, NextApiResponse } from "@/node_modules/next/dist/shared/lib/utils"
-import { getUserFromSpotifyID } from "../../../utils/auth"
+import { checkUserInDB, storeToken } from "../../../utils/auth"
 
 export const GET = async (request: NextApiRequest, response: NextApiResponse) => {
   
@@ -23,8 +23,9 @@ export const GET = async (request: NextApiRequest, response: NextApiResponse) =>
 
       const userInfo = await spotifyApi.getMe()
       const {display_name, id, email, images} = userInfo.body
-      console.log(userInfo.body)
-      let user = await getUserFromSpotifyID(display_name, id, email, images)
+      
+      await checkUserInDB(display_name, id, email, images)
+      await storeToken(id, access_token, refresh_token)
 
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }

@@ -8,6 +8,14 @@ const userSchema = new mongoose.Schema({
   name: String
 });
 
+const tokenSchema = new mongoose.Schema({
+  id: String,
+  accessToken: String,
+  refreshToken: String
+})
+
 const User = mongoose.model('User', userSchema);
 
-export default User;
+const Token = mongoose.model('Token', tokenSchema)
+
+module.exports = {User, Token};
