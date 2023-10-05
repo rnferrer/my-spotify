@@ -1,9 +1,10 @@
 import { spotifyApi } from "@/utils/spotifyAuth"
-import { NextResponse } from "@/node_modules/next/server";
-import { NextApiRequest, NextApiResponse } from "@/node_modules/next/dist/shared/lib/utils"
 import { checkUserInDB, storeToken } from "../../../utils/auth"
+import { serialize } from "cookie"
+import { cookies } from "next/headers"
+import { NextApiRequest, NextApiResponse } from "next"
 
-export const GET = async (request: NextApiRequest, response: NextApiResponse) => {
+export const GET = async (request: NextApiRequest, res: NextApiResponse) => {
   
   if (typeof request.url === 'string'){
     const url: string | URL  = new URL(request.url, 'http://localhost:3000');
@@ -11,7 +12,7 @@ export const GET = async (request: NextApiRequest, response: NextApiResponse) =>
     
     //code is not given in request
     if (!code){
-      return response.status(400).send('Missing authorization code');
+      return res.status(400).send('Missing authorization code');
     }
 
     try {
@@ -23,19 +24,25 @@ export const GET = async (request: NextApiRequest, response: NextApiResponse) =>
 
       const userInfo = await spotifyApi.getMe()
       const {display_name, id, email, images} = userInfo.body
-      
+
       await checkUserInDB(display_name, id, email, images)
       await storeToken(id, access_token, refresh_token)
 
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      cookies().set('userID', id, {
+        httpOnly: true,
+        path: '/',
+        maxAge: 60*5
+      })
+
+      return res.redirect(302, '/dashboard')
     }
     catch(e){
       console.log(e)
-      return response.send({message: 'error'})
+      return res.json({message: 'error'})
     }
   }
   else{
-    return response.status(400).send('Invalid request.')
+    return res.status(400).json('Invalid request.')
   }
 
 }
