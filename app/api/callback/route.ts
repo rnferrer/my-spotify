@@ -1,9 +1,9 @@
-import { spotifyApi } from "@/utils/spotifyAuth"
-import { checkUserInDB, storeToken } from "@/utils/auth"
-import { NextApiRequest, NextApiResponse } from "next"
+import { spotifyApi } from "@/utils/spotifyAuth";
+import { checkUserInDB, storeToken } from "@/utils/auth";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-export async function GET(request: NextApiRequest, res: NextApiResponse) {
+export async function GET(request: Request) {
   
   if (typeof request.url === 'string'){
     const url: string | URL  = new URL(request.url, 'http://localhost:3000');
@@ -11,7 +11,7 @@ export async function GET(request: NextApiRequest, res: NextApiResponse) {
     
     //code is not given in request
     if (!code){
-      return res.status(400).json({message: 'Missing authorization code'});
+      return NextResponse.json({message: 'Missing authorization code'}, {status: 400});
     }
 
     try {
@@ -21,29 +21,22 @@ export async function GET(request: NextApiRequest, res: NextApiResponse) {
       spotifyApi.setAccessToken(access_token);
       spotifyApi.setRefreshToken(refresh_token);
 
-      const userInfo = await spotifyApi.getMe()
-      const {display_name, id, email, images} = userInfo.body
+      const userInfo = await spotifyApi.getMe();
+      const {display_name, id, email, images} = userInfo.body;
 
-      await checkUserInDB(display_name, id, email, images)
-      await storeToken(id, access_token, refresh_token)
+      await checkUserInDB(display_name, id, email, images);
+      await storeToken(id, access_token, refresh_token);
 
-      console.log(res)
-
-      // cookies().set('userID', id, {
-      //   httpOnly: true,
-      //   path: '/',
-      //   maxAge: 60*5
-      // })
-
-      return res.redirect('/dashboard')
+      return NextResponse.redirect(new URL('/dashboard', request.url));
     }
     catch(e){
       console.log(e)
-      return res.status(400).json({message: 'error'})
+      return NextResponse.json({message: 'error'}, {status: 400});
     }
   }
   else{
-    return res.status(400).json({message: 'Invalid request.'})
+    return NextResponse.json({message: 'Invalid request.'}, {status: 400});
   }
 
 }
+
