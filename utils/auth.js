@@ -16,7 +16,6 @@ export const checkUserInDB = async (name, id, email, images) => {
       });
 
       await newUser.save();
-      console.log(newUser);
       return newUser;
     }
   }
@@ -40,6 +39,4 @@ export const storeToken = async (id, accessToken, refreshToken) => {
   });
 
   await newToken.save();
-
-  console.log(newToken)
 }

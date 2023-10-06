@@ -1,10 +1,9 @@
 import { spotifyApi } from "@/utils/spotifyAuth"
-import { checkUserInDB, storeToken } from "../../../utils/auth"
-import { serialize } from "cookie"
-import { cookies } from "next/headers"
+import { checkUserInDB, storeToken } from "@/utils/auth"
 import { NextApiRequest, NextApiResponse } from "next"
+import { NextResponse } from "next/server";
 
-export const GET = async (request: NextApiRequest, res: NextApiResponse) => {
+export async function GET(request: NextApiRequest, res: NextApiResponse) {
   
   if (typeof request.url === 'string'){
     const url: string | URL  = new URL(request.url, 'http://localhost:3000');
@@ -12,7 +11,7 @@ export const GET = async (request: NextApiRequest, res: NextApiResponse) => {
     
     //code is not given in request
     if (!code){
-      return res.status(400).send('Missing authorization code');
+      return res.status(400).json({message: 'Missing authorization code'});
     }
 
     try {
@@ -28,21 +27,23 @@ export const GET = async (request: NextApiRequest, res: NextApiResponse) => {
       await checkUserInDB(display_name, id, email, images)
       await storeToken(id, access_token, refresh_token)
 
-      cookies().set('userID', id, {
-        httpOnly: true,
-        path: '/',
-        maxAge: 60*5
-      })
+      console.log(res)
 
-      return res.redirect(302, '/dashboard')
+      // cookies().set('userID', id, {
+      //   httpOnly: true,
+      //   path: '/',
+      //   maxAge: 60*5
+      // })
+
+      return res.redirect('/dashboard')
     }
     catch(e){
       console.log(e)
-      return res.json({message: 'error'})
+      return res.status(400).json({message: 'error'})
     }
   }
   else{
-    return res.status(400).json('Invalid request.')
+    return res.status(400).json({message: 'Invalid request.'})
   }
 
 }
