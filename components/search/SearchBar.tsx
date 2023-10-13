@@ -13,13 +13,12 @@ const SearchBar = () => {
     if (search.replace(/\s/g, '').length === 0) return
     else{
       const queryString = new URLSearchParams({searchQuery: search}).toString();
-      const url = `/api/search?${queryString}`;
+      const url = `/api/spotify/search?${queryString}`;
       const response = await fetch (url);
       let results = await response.json()
   
     }
   }
-
 
 
   return(

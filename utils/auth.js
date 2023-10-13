@@ -40,3 +40,9 @@ export const storeToken = async (id, accessToken, refreshToken) => {
 
   await newToken.save();
 }
+
+export const getToken = async (id) => {
+  const db = await connectDB();
+  const token = await Token.find({id});
+  return token;
+}

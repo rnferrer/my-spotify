@@ -27,6 +27,13 @@ export async function GET(request: Request) {
       await checkUserInDB(display_name, id, email, images);
       await storeToken(id, access_token, refresh_token);
 
+      cookies().set({
+        name: 'userID',
+        value: id,
+        httpOnly: true,
+        path: '/'
+      })
+
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
     catch(e){
