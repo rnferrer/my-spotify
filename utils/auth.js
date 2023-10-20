@@ -2,7 +2,7 @@ import { User, Token }  from '../models/schema'
 import connectDB from '../db/db'
 
 export const checkUserInDB = async (name, id, email, images) => {
-  const db = await connectDB();
+  await connectDB();
 
   const user = await User.find({id});
 
@@ -19,11 +19,13 @@ export const checkUserInDB = async (name, id, email, images) => {
       return newUser;
     }
   }
+
   return user[0]
 }
 
 export const storeToken = async (id, accessToken, refreshToken) => {
-  const db = await connectDB();
+  await connectDB();
+
 
   const tokens = await Token.find({id})
   
@@ -42,7 +44,6 @@ export const storeToken = async (id, accessToken, refreshToken) => {
 }
 
 export const getToken = async (id) => {
-  const db = await connectDB();
   const token = await Token.find({id});
   return token;
 }
