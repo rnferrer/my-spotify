@@ -1,10 +1,15 @@
 import { User, Token }  from '../models/schema'
-import connectDB from '../db/db'
+import { prisma } from './db';
 
 export const checkUserInDB = async (name, id, email, images) => {
-  await connectDB();
 
-  const user = await User.find({id});
+  const user = await prisma.user.findFirst({
+    where: {
+      userID: id,
+      email
+    }
+  });
+  console.log(user)
 
   if(user.length === 0){
     if(images.length >= 1){
@@ -24,7 +29,6 @@ export const checkUserInDB = async (name, id, email, images) => {
 }
 
 export const storeToken = async (id, accessToken, refreshToken) => {
-  await connectDB();
 
 
   const tokens = await Token.find({id})

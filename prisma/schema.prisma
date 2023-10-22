@@ -11,14 +11,16 @@ datasource db {
 }
 
 model User {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  image String
-  name  String
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userID String
+  email  String
+  image  String
+  name   String
 }
 
 model Token {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userID  String
   access  String
   refresh String
 }
