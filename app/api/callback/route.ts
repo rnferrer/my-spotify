@@ -24,10 +24,8 @@ export async function GET(request: Request) {
       const userInfo = await spotifyApi.getMe();
       const {display_name, id, email, images} = userInfo.body;
 
-      console.log(userInfo)
-
       await checkUserInDB(display_name, id, email, images);
-      //await storeToken(id, access_token, refresh_token);
+      await storeToken(id, access_token, refresh_token);
 
       cookies().set({
         name: 'userID',

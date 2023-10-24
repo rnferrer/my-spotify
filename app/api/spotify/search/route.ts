@@ -7,10 +7,8 @@ type NextRequestWithLocals = NextRequest & {
 }
 
 export const GET = async (request: NextRequestWithLocals) => {
-  console.log('in search endpoint')
 
   if(request.url){
-    console.log('in search endpoint')
 
     console.log(request.locals)
     // let token = await getToken(request.locals)

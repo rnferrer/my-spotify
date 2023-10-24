@@ -1,53 +1,69 @@
+import { access } from 'fs';
 import { User, Token }  from '../models/schema'
 import { prisma } from './db';
 
 export const checkUserInDB = async (name, id, email, images) => {
 
   const user = await prisma.user.findFirst({
-    where: {
-      userID: id,
-      email
+    where:{
+      userID: id
     }
   });
-  console.log(user)
 
-  if(user.length === 0){
-    if(images.length >= 1){
-      const newUser = new User({
-        id,
-        email,
-        image: images[0].url,
-        name
+  console.log(!user);
+
+  if(!user){
+    if(images.length >= 2){
+      const newUser = await prisma.user.create({
+        data: {
+          userID: id,
+          email,
+          image: images[1].url,
+          name
+        }
       });
-
-      await newUser.save();
       return newUser;
     }
   }
-
-  return user[0]
+  return user
 }
 
 export const storeToken = async (id, accessToken, refreshToken) => {
 
 
-  const tokens = await Token.find({id})
+  const token = await prisma.token.findFirst({
+    where:{
+      userID: id
+    }
+  });
   
   //if there are tokens in the db, we want to replace those with fresh tokens
-  if(tokens.length >= 1){
-    await Token.deleteMany({id});
+  if(token){
+    await prisma.token.deleteMany({
+      where: {
+        userID: id
+      }
+    })
   } 
 
-  const newToken = new Token({
-    id,
-    accessToken,
-    refreshToken
-  });
+  const newToken = await prisma.token.create({
+    data: {
+      userID: id,
+      access: accessToken,
+      refresh: refreshToken
+    }
+  })
 
-  await newToken.save();
+  console.log(newToken)
+
+  return newToken
 }
 
 export const getToken = async (id) => {
-  const token = await Token.find({id});
+  const token = await prisma.token.findFirst({
+    where: {
+      userID: id
+    }
+  });
   return token;
 }
