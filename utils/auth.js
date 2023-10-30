@@ -1,5 +1,3 @@
-import { access } from 'fs';
-import { User, Token }  from '../models/schema'
 import { prisma } from './db';
 
 export const checkUserInDB = async (name, id, email, images) => {
