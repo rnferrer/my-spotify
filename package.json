@@ -11,6 +11,11 @@
     "electron": "electron ."
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.8",
+    "@mui/icons-material": "^5.14.16",
+    "@mui/material": "^5.14.16",
     "@prisma/client": "^5.4.2",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",

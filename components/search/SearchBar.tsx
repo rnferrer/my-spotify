@@ -1,10 +1,12 @@
 'use client'
 
 import { ChangeEvent, useState } from "react"
+import { TextField } from "@mui/material"
 
 const SearchBar = () => {
   
   const [search, setSearch] = useState('')
+  const [results, setResults] = useState([])
   const handleChange = async(event: ChangeEvent<HTMLInputElement>) =>{
     event.preventDefault()
     console.log(event.target.value)
@@ -15,14 +17,16 @@ const SearchBar = () => {
       const queryString = new URLSearchParams({searchQuery: search}).toString();
       const url = `/api/spotify/search?${queryString}`;
       const response = await fetch (url);
-      let results = await response.json()
+      let data = await response.json()
+      console.log(data)
   
     }
   }
 
 
   return(
-    <div className="w-screen z-999">
+    <div className="w-screen">
+      <TextField variant="standard"/>
       <form>
         <input 
         autoComplete="off" 

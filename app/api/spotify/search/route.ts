@@ -22,13 +22,13 @@ export const GET = async (request: NextRequestWithLocals) => {
     console.log(searchQuery)
     const data = await spotifyApi.searchTracks(searchQuery)
     const tracks = data.body.tracks.items.slice(0,5)
-    const trackInfo = tracks.map((track) => {
+    const trackInfo = tracks.map((track:any) => {
       const {artists, href, id, name, uri, album} = track
       const image = album.images[2]
       return {artists, href, id, name, uri, image}
     })
 
     console.log(trackInfo)
-    return NextResponse.json({data: searchQuery})  
+    return NextResponse.json(trackInfo)  
   }
 }
