@@ -1,6 +1,6 @@
 import { prisma } from './db';
 
-export const checkUserInDB = async (name, id, email, images) => {
+export const checkUserInDB = async (name:string, id:string, email:string, images:any) => {
 
   const user = await prisma.user.findFirst({
     where:{
@@ -26,7 +26,7 @@ export const checkUserInDB = async (name, id, email, images) => {
   return user
 }
 
-export const storeToken = async (id, accessToken, refreshToken) => {
+export const storeToken = async (id: string, accessToken: string, refreshToken: string) => {
 
 
   const token = await prisma.token.findFirst({
@@ -57,7 +57,7 @@ export const storeToken = async (id, accessToken, refreshToken) => {
   return newToken
 }
 
-export const getToken = async (id) => {
+export const getToken = async (id:string) => {
   const token = await prisma.token.findFirst({
     where: {
       userID: id
