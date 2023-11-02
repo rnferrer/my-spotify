@@ -1,7 +1,7 @@
 'use client'
 
 import { ChangeEvent, useState } from "react"
-import { TextField } from "@mui/material"
+import { List, ListItem, ListItemText, ListItemButton, ListItemAvatar ,TextField } from "@mui/material"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export const colorTheme = createTheme({
@@ -32,6 +32,8 @@ const SearchBar = () => {
       const response = await fetch (url);
       let data = await response.json()
       setResults(data)
+
+      
     }
   }
 
@@ -39,14 +41,34 @@ const SearchBar = () => {
   return(
     <ThemeProvider theme={colorTheme}>
       <div className="w-full h-auto flex justify-center items-center">
-        <TextField 
-        color="primary"
-        className="w-1/2"
-        onChange={(e) => handleChange(e)}
-        label="Search song to queue"
-        InputProps={{ style: {color:'white'} }}
-        focused
-        />
+        <div className="flex flex-col w-1/2 items-center">
+          <TextField 
+          color="primary"
+          className="w-full"
+          onChange={(e) => handleChange(e)}
+          label="Search song to queue"
+          InputProps={{ style: {color:'white'} }}
+          focused
+          />
+        <List sx={{ width: '100%', bgcolor: 'primary.light' }}>
+          {[1, 2, 3].map((value) => (
+            <ListItem
+              key={value}
+              disableGutters
+              disablePadding
+            >
+              <ListItemButton>
+                <ListItemAvatar>
+
+                </ListItemAvatar>
+                <ListItemText primary={`Artists - ${value}`} />
+
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+
+        </div>
       </div>
 
     </ThemeProvider>
