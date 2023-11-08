@@ -1,7 +1,7 @@
 'use client'
 
 import { ChangeEvent, useState } from "react"
-import { List, ListItem, ListItemText, ListItemButton, ListItemAvatar ,TextField } from "@mui/material"
+import { List, ListItem, ListItemText, ListItemButton, ListItemAvatar ,TextField, Avatar } from "@mui/material"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export const colorTheme = createTheme({
@@ -11,6 +11,12 @@ export const colorTheme = createTheme({
       light: '#7fd77e',
       dark: '#428f41',
       contrastText: '#fff'
+    },
+    text: {
+      primary: '#5fcd5e'
+    },
+    background: {
+      gray: '#C0C0C0'
     }
   }
 })
@@ -20,9 +26,9 @@ const SearchBar = () => {
   const [search, setSearch] = useState('')
   const [results, setResults] = useState([])
 
+  //need to implement using debounce to delay too many simultaneous requests
   const handleChange = async(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
     event.preventDefault()
-    console.log(event.target.value)
     setSearch(event.target.value)
     
     if (search.replace(/\s/g, '').length === 0) return
@@ -32,8 +38,8 @@ const SearchBar = () => {
       const response = await fetch (url);
       let data = await response.json()
       setResults(data)
+      console.log(data)
 
-      
     }
   }
 
@@ -50,18 +56,20 @@ const SearchBar = () => {
           InputProps={{ style: {color:'white'} }}
           focused
           />
-        <List sx={{ width: '100%', bgcolor: 'primary.light' }}>
-          {[1, 2, 3].map((value) => (
+        <List sx={{ width: '100%', bgcolor: 'background.gray' }}>
+          {results.map((result) => (
             <ListItem
-              key={value}
+              key={result}
               disableGutters
               disablePadding
             >
               <ListItemButton>
                 <ListItemAvatar>
-
+                  <Avatar
+                    src={result.image.url}
+                  />
                 </ListItemAvatar>
-                <ListItemText primary={`Artists - ${value}`} />
+                <ListItemText primary={`${result.name} - ${result.artists[0].name} `} />
 
               </ListItemButton>
             </ListItem>

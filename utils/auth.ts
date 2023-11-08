@@ -8,7 +8,6 @@ export const checkUserInDB = async (name:string, id:string, email:string, images
     }
   });
 
-  console.log(!user);
 
   if(!user){
     if(images.length >= 2){
@@ -51,8 +50,6 @@ export const storeToken = async (id: string, accessToken: string, refreshToken: 
       refresh: refreshToken
     }
   })
-
-  console.log(newToken)
 
   return newToken
 }
