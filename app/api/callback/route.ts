@@ -3,11 +3,11 @@ import { checkUserInDB, storeToken } from "@/utils/auth";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse> {
   
   if (typeof request.url === 'string'){
     const url: string | URL  = new URL(request.url, 'http://localhost:3000');
-    const code = url.searchParams.get('code');
+    const code: string | null = url.searchParams.get('code');
     
     //code is not given in request
     if (!code){

@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["node", "react", "next"],
+    "types": ["node", "react", "next", "spotify-api"],
     "typeRoots": ["./node_modules/@types"],
     "plugins": [
       {

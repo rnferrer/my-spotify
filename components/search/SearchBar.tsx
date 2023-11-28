@@ -21,7 +21,7 @@ export const colorTheme = createTheme({
   }
 })
 
-const SearchBar = () => {
+const SearchBar = ():JSX.Element => {
   
   const [search, setSearch] = useState('')
   const [results, setResults] = useState([])
@@ -31,7 +31,9 @@ const SearchBar = () => {
     event.preventDefault()
     setSearch(event.target.value)
     
-    if (search.replace(/\s/g, '').length === 0) return
+    if (search.replace(/\s/g, '').length === 0){
+      setResults([])
+    }
     else{
       const queryString = new URLSearchParams({searchQuery: search}).toString();
       const url = `/api/spotify/search?${queryString}`;
@@ -39,7 +41,6 @@ const SearchBar = () => {
       let data = await response.json()
       setResults(data)
       console.log(data)
-
     }
   }
 
@@ -47,7 +48,7 @@ const SearchBar = () => {
   return(
     <ThemeProvider theme={colorTheme}>
       <div className="w-full h-auto flex justify-center items-center">
-        <div className="flex flex-col w-1/2 items-center">
+        <div className="flex flex-col w-1/2 items-center absolute">
           <TextField 
           color="primary"
           className="w-full"
@@ -56,25 +57,33 @@ const SearchBar = () => {
           InputProps={{ style: {color:'white'} }}
           focused
           />
-        <List sx={{ width: '100%', bgcolor: 'background.gray' }}>
-          {results.map((result) => (
-            <ListItem
-              key={result}
-              disableGutters
-              disablePadding
-            >
-              <ListItemButton>
-                <ListItemAvatar>
-                  <Avatar
-                    src={result.image.url}
-                  />
-                </ListItemAvatar>
-                <ListItemText primary={`${result.name} - ${result.artists[0].name} `} />
+          { results.length === 0 
+          ?
+          <>
+          </>
+          :
+          <List sx={{ width: '100%', bgcolor: 'background.gray' }}>
+            {results.map((result) => (
+              <ListItem
+                key={result}
+                disableGutters
+                disablePadding={true}
+              >
+                <ListItemButton>
+                  <ListItemAvatar>
+                    <Avatar
+                      variant="square"
+                      src={result.image.url}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText primary={`${result.name} - ${result.artists[0].name} `} />
 
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+
+          }
 
         </div>
       </div>
