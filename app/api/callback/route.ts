@@ -31,6 +31,15 @@ export async function GET(request: Request): Promise<NextResponse> {
         name: 'userID',
         value: id,
         httpOnly: true,
+        secure: true,
+        path: '/'
+      })
+
+      cookies().set({
+        name: 'access_token',
+        value: access_token,
+        httpOnly: true,
+        secure: true,
         path: '/'
       })
 

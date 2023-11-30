@@ -26,7 +26,7 @@ const SearchBar = ():JSX.Element => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
 
-  const debounce = (func: Function, delay: Number) => {
+  const debounce = (func: Function, delay: number) => {
     let timeoutId: NodeJS.Timeout;
 
     return function () {
@@ -42,17 +42,17 @@ const SearchBar = ():JSX.Element => {
   };
 
   const handleSearch = debounce(async() => {
-    console.log(`Searching for '${search}'`)
+    console.log(`Searching for '${search}'`);
       if (search.replace(/\s/g, '').length === 0){
-        setResults([])
+        setResults([]);
       }
       else{
         const queryString = new URLSearchParams({searchQuery: search}).toString();
         const url = `/api/spotify/search?${queryString}`;
         const response = await fetch (url);
-        let data = await response.json()
-        setResults(data)
-        console.log(data)
+        let data = await response.json();
+        setResults(data);
+        console.log(data);
       }
   }, 1000)
 
@@ -74,15 +74,15 @@ const SearchBar = ():JSX.Element => {
           InputProps={{ style: {color:'white'} }}
           focused
           />
-          { results.length === 0 
+          { search === '' || results.length === 0
           ?
           <>
           </>
           :
           <List sx={{ width: '100%', bgcolor: 'background.gray' }}>
-            {(results.length > 0)?
-         
-            results.map((result, index) => (
+            {(results.length > 0)
+            ?
+            results.map((result: any, index) => (
               <ListItem
                 key={index}
                 disableGutters
@@ -112,6 +112,6 @@ const SearchBar = ():JSX.Element => {
 
     </ThemeProvider>
   )
-}
+};
 
-export default SearchBar
+export default SearchBar;
