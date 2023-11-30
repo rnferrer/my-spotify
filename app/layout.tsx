@@ -16,12 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+      </body>
     </html>
   )
 }
 
-{/* <head>
-  <script src="https://sdk.scdn.co/spotify-player.js" async/>
-</head> */}

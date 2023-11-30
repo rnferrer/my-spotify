@@ -3,6 +3,7 @@
 import { ChangeEvent, useState } from "react"
 import { List, ListItem, ListItemText, ListItemButton, ListItemAvatar ,TextField, Avatar } from "@mui/material"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import SpotifyPlayer from "react-spotify-web-playback";
 
 export const colorTheme = createTheme({
   palette:{
@@ -108,6 +109,7 @@ const SearchBar = ():JSX.Element => {
           }
 
         </div>
+        <SpotifyPlayer/>
       </div>
 
     </ThemeProvider>
