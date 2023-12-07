@@ -1,6 +1,6 @@
 import SpotifyWebApi from "spotify-web-api-node";
 
-const generateRandomStr = (length) => {
+const generateRandomStr = (length:number) => {
   let text = '';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -17,7 +17,7 @@ export const spotifyApi = new SpotifyWebApi({
 })
 
 export const getAuthURL = () => {
-  let scope = [
+  let scope: Array<string> = [
     'ugc-image-upload',
     'user-read-playback-state',
     'user-modify-playback-state',
@@ -37,6 +37,6 @@ export const getAuthURL = () => {
     'user-read-email', 
     'streaming'
   ];
-  let state = generateRandomStr(16);
+  let state:string = generateRandomStr(16);
   return spotifyApi.createAuthorizeURL(scope, state)
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { List, ListItem, ListItemText, ListItemButton, ListItemAvatar ,TextField, Avatar } from "@mui/material"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SpotifyPlayer from "react-spotify-web-playback";
@@ -26,6 +26,18 @@ const SearchBar = ():JSX.Element => {
   
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
+  const [token, setToken] =useState('')
+
+  useEffect(()=>{
+
+    const fetchToken = async () => {
+      const url = `/api/spotify/token`;
+      const response = await fetch (url);
+      const data = await response.json();
+      setToken(data)
+    };
+    fetchToken();
+  }, [])
 
   const debounce = (func: Function, delay: number) => {
     let timeoutId: NodeJS.Timeout;
@@ -96,7 +108,7 @@ const SearchBar = ():JSX.Element => {
                       src={result.image.url}
                     />
                   </ListItemAvatar>
-                  <ListItemText primary={`${result.name} - ${result.artists[0].name} `} />
+                  <ListItemText primary={`${result.name} - ${result.artists[0]} `} />
 
                 </ListItemButton>
               </ListItem>
@@ -109,7 +121,7 @@ const SearchBar = ():JSX.Element => {
           }
 
         </div>
-        <SpotifyPlayer/>
+        {/* <SpotifyPlayer token={token}/> */}
       </div>
 
     </ThemeProvider>
